@@ -56,18 +56,34 @@ public class AudioManager : MonoBehaviour
     AudioSource sound;
     AudioSource music;
 
+    // Use this to handle volume & other lab 1 tasks!
+    [Range(0.0f, 1.0f)]
+    public float testSlider;
+
     private void Load()
     {
         soundClips[(int)SoundName.BOOM] = Resources.Load<AudioClip>("boom");
+        soundClips[(int)SoundName.DEATH] = Resources.Load<AudioClip>("death");
+        soundClips[(int)SoundName.JUMP] = Resources.Load<AudioClip>("jump");
+        soundClips[(int)SoundName.LASER] = Resources.Load<AudioClip>("laser");
+
         musicClips[(int)MusicName.MASK] = Resources.Load<AudioClip>("MASK");
+        musicClips[(int)MusicName.THUNDERCATS] = Resources.Load<AudioClip>("Thundercats");
+        musicClips[(int)MusicName.TMNT] = Resources.Load<AudioClip>("Turtles");
 
         sound = gameObject.AddComponent<AudioSource>();
         music = gameObject.AddComponent<AudioSource>();
+    }
 
-        sound.clip = soundClips[(int)SoundName.BOOM];
-        music.clip = musicClips[(int)MusicName.MASK];
-
+    public void PlaySound(SoundName soundId)
+    {
+        sound.clip = soundClips[(int)soundId];
         sound.Play();
+    }
+
+    public void PlayMusic(MusicName musicId)
+    {
+        music.clip = musicClips[(int)musicId];
         music.Play();
     }
 }
