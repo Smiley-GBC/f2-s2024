@@ -12,17 +12,20 @@ public class AudioPlayer : MonoBehaviour
 
     void PlayBoom()
     {
-        AudioManager.Instance.PlaySound(SoundName.BOOM);
+        AudioManager.PlaySound(SoundName.BOOM);
+        //AudioManager.Instance.PlaySound(SoundName.BOOM);
     }
 
     void PlayDeath()
     {
-        AudioManager.Instance.PlaySound(SoundName.DEATH);
+        AudioManager.PlaySound(SoundName.DEATH);
+        //AudioManager.Instance.PlaySound(SoundName.DEATH);
     }
 
     void PlayMask()
     {
-        AudioManager.Instance.PlayMusic(MusicName.MASK);
+        AudioManager.PlayMusic(MusicName.MASK);
+        //AudioManager.Instance.PlayMusic(MusicName.MASK);
     }
 
     void Start()

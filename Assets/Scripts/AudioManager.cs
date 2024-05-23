@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum SoundName
@@ -21,6 +22,50 @@ public enum MusicName
     COUNT
 }
 
+// Static class --> essentially a singleton but without the "instance" stuff
+public static class AudioManager// No longer deriving from Monobehaviour so we're working purely in code (no inspector)!
+{
+    // Constructor function -- runs once every time an *instance* of an object gets created ie AddComponent<AudioManager>();
+    //AudioManager()
+    //{
+    //}
+
+    // Static constructor -- runs only once ever (once per object type)
+    static AudioManager()
+    {
+        soundClips[(int)SoundName.BOOM] = Resources.Load<AudioClip>("boom");
+        soundClips[(int)SoundName.DEATH] = Resources.Load<AudioClip>("death");
+        soundClips[(int)SoundName.JUMP] = Resources.Load<AudioClip>("jump");
+        soundClips[(int)SoundName.LASER] = Resources.Load<AudioClip>("laser");
+
+        musicClips[(int)MusicName.MASK] = Resources.Load<AudioClip>("MASK");
+        musicClips[(int)MusicName.THUNDERCATS] = Resources.Load<AudioClip>("Thundercats");
+        musicClips[(int)MusicName.TMNT] = Resources.Load<AudioClip>("Turtles");
+
+        GameObject proxy = new GameObject();
+        music = proxy.AddComponent<AudioSource>();
+        sound = proxy.AddComponent<AudioSource>();
+    }
+
+    static AudioClip[] soundClips = new AudioClip[(int)SoundName.COUNT];
+    static AudioClip[] musicClips = new AudioClip[(int)MusicName.COUNT];
+    static AudioSource sound;
+    static AudioSource music;
+
+    public static void PlaySound(SoundName soundId)
+    {
+        sound.clip = soundClips[(int)soundId];
+        sound.Play();
+    }
+
+    public static void PlayMusic(MusicName musicId)
+    {
+        music.clip = musicClips[(int)musicId];
+        music.Play();
+    }
+}
+
+/*
 // Unity-style singleton so we can integrate with Inspector
 public class AudioManager : MonoBehaviour
 {
@@ -87,3 +132,4 @@ public class AudioManager : MonoBehaviour
         music.Play();
     }
 }
+*/
