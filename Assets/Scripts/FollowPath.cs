@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FollowPath : MonoBehaviour
 {
-    bool followPath = true;
     float currentTime = 0.0f;
     float totalTime = 1.0f;
 
@@ -23,9 +22,6 @@ public class FollowPath : MonoBehaviour
             nextWaypoint++;
         }
 
-        Debug.Log(currentWaypoint);
-        Debug.Log(nextWaypoint);
-
         float tt = Time.realtimeSinceStartup;
         float t = currentTime;//Mathf.Cos(tt) * 0.5f + 0.5f;
 
@@ -36,7 +32,8 @@ public class FollowPath : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "End")
+        // Destroy the enemy if its reached the last waypoint!
+        if (collision.name == waypoints[waypoints.Length - 1].name)
         {
             Destroy(gameObject);
         }
