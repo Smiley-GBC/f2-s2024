@@ -4,32 +4,41 @@ using UnityEngine;
 
 public class FollowPath : MonoBehaviour
 {
-    public Vector2 A;
-    public Vector2 B;
+    bool followPath = true;
+    float currentTime = 0.0f;
+    float totalTime = 1.0f;
 
     public Transform[] waypoints;
-    int next = 0;
-
-    void Start()
-    {
-        for (int i = 0; i < waypoints.Length; i++)
-        {
-            Debug.Log(waypoints[i].position);
-        }
-    }
+    int currentWaypoint = 0;
+    int nextWaypoint = 1;
 
     void Update()
     {
-        //transform.position = Vector2.MoveTowards(transform.position,
-        //    waypoints[1].position, 5.0f * Time.deltaTime);
+        float dt = Time.deltaTime;
+        currentTime += dt;
+        if (currentTime > totalTime)
+        {
+            currentTime = 0.0f;
+            currentWaypoint++;
+            nextWaypoint++;
+        }
+
+        Debug.Log(currentWaypoint);
+        Debug.Log(nextWaypoint);
 
         float tt = Time.realtimeSinceStartup;
-        float t = Mathf.Cos(tt) * 0.5f + 0.5f;
-        Debug.Log(t);
-        transform.position = Vector2.Lerp(A, B, t);
+        float t = currentTime;//Mathf.Cos(tt) * 0.5f + 0.5f;
 
-        //Vector2.Lerp()
-        // We want to move between waypoints in a line.
-        // How do we move in a line???
+        Vector2 A = waypoints[currentWaypoint].position;
+        Vector2 B = waypoints[nextWaypoint].position;
+        transform.position = Vector2.Lerp(A, B, t);
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.name == "End")
+        {
+            Destroy(gameObject);
+        }
     }
 }
