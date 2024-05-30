@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FollowPath : MonoBehaviour
 {
+    // TODO 1 -- save/load
+    // TODO 2 -- review object creation from code
+
     float currentTime = 0.0f;
     float totalTime = 1.0f;
 
