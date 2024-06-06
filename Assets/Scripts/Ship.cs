@@ -50,30 +50,7 @@ public class Ship : MonoBehaviour
         rb.velocity = Vector2.ClampMagnitude(rb.velocity, moveSpeedMax);
 
         // Wrap ship
-        float size = Camera.main.orthographicSize;
-        float aspect = Camera.main.aspect;
-        float xMin = -size * aspect;
-        float xMax =  size * aspect;
-        float yMin = -size;
-        float yMax =  size;
-        float radius = collider.radius;
-
-        if (transform.position.x < xMin)
-        {
-            transform.position = new Vector3(xMax - radius, transform.position.y);
-        }
-        if (transform.position.x > xMax)
-        {
-            transform.position = new Vector3(xMin + radius, transform.position.y);
-        }
-        if (transform.position.y < yMin)
-        {
-            transform.position = new Vector3(transform.position.x, yMax - radius);
-        }
-        if (transform.position.y > yMax)
-        {
-            transform.position = new Vector3(transform.position.x, yMin + radius);
-        }
+        GameUtilities.Wrap(gameObject);
 
         Debug.DrawLine(transform.position, transform.position + direction * 5.0f, Color.red);
     }
