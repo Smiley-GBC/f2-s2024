@@ -49,6 +49,8 @@ public class Ship : MonoBehaviour
             bullet.transform.position = transform.position + direction;
             bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
             Destroy(bullet, 1.0f);
+
+            AudioManager.PlaySound(SoundName.FIRE);
         }
 
         // Limit our movement speed (linear velocity) to a maximum

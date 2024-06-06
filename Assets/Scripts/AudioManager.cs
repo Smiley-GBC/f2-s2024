@@ -10,6 +10,11 @@ public enum SoundName
     JUMP,
     LASER,
 
+    ENGINE,
+    EXPLODE,
+    FIRE,
+    TELEPORT,
+
     COUNT
 }
 
@@ -18,6 +23,9 @@ public enum MusicName
     MASK,
     THUNDERCATS,
     TMNT,
+
+    TITLE,
+    WINGS,
 
     COUNT
 }
@@ -33,14 +41,22 @@ public static class AudioManager// No longer deriving from Monobehaviour so we'r
     // Static constructor -- runs only once ever (once per object type)
     static AudioManager()
     {
-        soundClips[(int)SoundName.BOOM] = Resources.Load<AudioClip>("boom");
-        soundClips[(int)SoundName.DEATH] = Resources.Load<AudioClip>("death");
-        soundClips[(int)SoundName.JUMP] = Resources.Load<AudioClip>("jump");
-        soundClips[(int)SoundName.LASER] = Resources.Load<AudioClip>("laser");
+        //soundClips[(int)SoundName.BOOM] = Resources.Load<AudioClip>("boom");
+        //soundClips[(int)SoundName.DEATH] = Resources.Load<AudioClip>("death");
+        //soundClips[(int)SoundName.JUMP] = Resources.Load<AudioClip>("jump");
+        //soundClips[(int)SoundName.LASER] = Resources.Load<AudioClip>("laser");
+        //
+        //musicClips[(int)MusicName.MASK] = Resources.Load<AudioClip>("MASK");
+        //musicClips[(int)MusicName.THUNDERCATS] = Resources.Load<AudioClip>("Thundercats");
+        //musicClips[(int)MusicName.TMNT] = Resources.Load<AudioClip>("Turtles");
 
-        musicClips[(int)MusicName.MASK] = Resources.Load<AudioClip>("MASK");
-        musicClips[(int)MusicName.THUNDERCATS] = Resources.Load<AudioClip>("Thundercats");
-        musicClips[(int)MusicName.TMNT] = Resources.Load<AudioClip>("Turtles");
+        soundClips[(int)SoundName.ENGINE] = Resources.Load<AudioClip>("Engines");
+        soundClips[(int)SoundName.EXPLODE] = Resources.Load<AudioClip>("Explode");
+        soundClips[(int)SoundName.FIRE] = Resources.Load<AudioClip>("Fire");
+        soundClips[(int)SoundName.TELEPORT] = Resources.Load<AudioClip>("Teleport");
+
+        musicClips[(int)MusicName.TITLE] = Resources.Load<AudioClip>("Title");
+        musicClips[(int)MusicName.WINGS] = Resources.Load<AudioClip>("Wings");
 
         GameObject proxy = new GameObject();
         music = proxy.AddComponent<AudioSource>();
