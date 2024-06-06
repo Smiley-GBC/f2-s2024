@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 // This annotation is needed/recommended in order to make Unity serialization work!
@@ -14,6 +13,8 @@ public class GameData
     public int integer;
     public float rational;
     public string text;
+
+    public List<int> numbers = new List<int>();
 }
 
 public class DataManager : MonoBehaviour
@@ -45,6 +46,9 @@ public class DataManager : MonoBehaviour
         saveData.integer = 1;
         saveData.rational = 2.2f;
         saveData.text = "gronk";
+        saveData.numbers.Add(1);
+        saveData.numbers.Add(2);
+        saveData.numbers.Add(3);
 
         // 2. Serialize (convert from memory to text)
         string json = JsonUtility.ToJson(saveData);
@@ -75,6 +79,9 @@ public class DataManager : MonoBehaviour
         saveData.integer = 3;
         saveData.rational = 4.4f;
         saveData.text = "dronk";
+        saveData.numbers.Add(4);
+        saveData.numbers.Add(5);
+        saveData.numbers.Add(6);
 
         // 2. Create a serializer (mechanism to convert from memory to text)
         XmlSerializer serializer = new XmlSerializer(typeof(GameData));
@@ -96,8 +103,6 @@ public class DataManager : MonoBehaviour
         {
             loadData = (GameData)deserializer.Deserialize(streamReader);
         }
-
-        Debug.Log("Load data: " + loadData);
     }
 
     void PlayerPrefsExample()
