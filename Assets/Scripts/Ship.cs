@@ -7,6 +7,7 @@ public class Ship : MonoBehaviour
     Rigidbody2D rb;
     float thrust = 10.0f;
     float turnSpeed = 360.0f;   // 1 revolution per second
+    const float moveSpeedMax = 10.0f;
 
     void Start()
     {
@@ -25,6 +26,9 @@ public class Ship : MonoBehaviour
         {
             rb.AddForce(-direction * thrust);
         }
+
+        // Limit our movement speed (linear velocity) to a maximum
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity, moveSpeedMax);
 
         // Rotate
         if (Input.GetKey(KeyCode.A))
