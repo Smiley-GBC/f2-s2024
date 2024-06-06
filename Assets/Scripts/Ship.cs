@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
+    [SerializeField]
+    GameObject bulletPrefab;
+
     Rigidbody2D rb;
-    CircleCollider2D collider;
 
     float thrust = 10.0f;
     float turnSpeed = 360.0f;   // 1 revolution per second
     const float moveSpeedMax = 10.0f;
+    const float bulletSpeed = 15.0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<CircleCollider2D>();
     }
 
     void Update()
@@ -43,7 +45,10 @@ public class Ship : MonoBehaviour
         // Shoot
         if (Input.GetKeyDown(KeyCode.Space))
         {
-
+            GameObject bullet = Instantiate(bulletPrefab);
+            bullet.transform.position = transform.position + direction;
+            bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+            Destroy(bullet, 1.0f);
         }
 
         // Limit our movement speed (linear velocity) to a maximum
