@@ -56,6 +56,20 @@ public class Ship : MonoBehaviour
             AudioManager.PlaySound(SoundName.FIRE);
         }
 
+        // TODO -- make a teleport function that randomly teleports the player, but ensures it doesn't hit an asteroid
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            // Returns all Asteroid components
+            Asteroid[] asteroids = FindObjectsOfType<Asteroid>();
+            for (int i = 0; i < asteroids.Length; i++)
+            {
+                // Access individual asteroids within loop:
+                //GameObject asteroidGO = asteroids[i].gameObject;
+                //Debug.Log(asteroidGO.transform.position);
+                // (You'll want to hit-test every asteroid within this loop, maybe using Physics2D.OverlapCircle)
+            }
+        }
+
         // Limit linear velocity (position rate change) & angular velocity (rotation rate of change) to a maximum
         rb.velocity = Vector2.ClampMagnitude(rb.velocity, moveSpeedMax);
         rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -turnSpeedMax, turnSpeedMax);
@@ -64,5 +78,10 @@ public class Ship : MonoBehaviour
         GameUtilities.Wrap(gameObject);
 
         Debug.DrawLine(transform.position, transform.position + direction * 5.0f, Color.red);
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(name + " colliding with " + collision.name);
     }
 }
