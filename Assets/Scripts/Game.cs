@@ -7,7 +7,7 @@ public class Game : MonoBehaviour
 {
     void Start()
     {
-        AudioManager.PlayMusic(MusicName.WINGS);
+        //AudioManager.PlayMusic(MusicName.WINGS);
     }
 
     void Update()

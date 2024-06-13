@@ -35,11 +35,11 @@ public class Ship : MonoBehaviour
         // Rotate
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0.0f, 0.0f, turnSpeed * Time.deltaTime);
+            rb.AddTorque(thrust * 0.1f);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(0.0f, 0.0f, -turnSpeed * Time.deltaTime);
+            rb.AddTorque(-thrust * 0.1f);
         }
 
         // Shoot
