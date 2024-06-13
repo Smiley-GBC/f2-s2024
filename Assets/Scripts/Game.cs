@@ -5,27 +5,37 @@ using UnityEngine;
 // Class for cross-communication between systems -- Ship, Bullet, Asteroid, etc.
 public class Game : MonoBehaviour
 {
-    Timer timer = new Timer();
+    [SerializeField]
+    GameObject asteroidPrefab;
+
+    Timer asteroidTimer = new Timer();
 
     void Start()
     {
-        timer.total = 0.25f;
+        asteroidTimer.total = 1.5f;
         //AudioManager.PlayMusic(MusicName.WINGS);
     }
 
     void Update()
     {
         // Run the test function every 0.25 seconds!
-        timer.Tick(Time.deltaTime);
-        if (timer.Expired())
+        asteroidTimer.Tick(Time.deltaTime);
+        if (asteroidTimer.Expired())
         {
-            timer.Reset();
-            //Test();
+            asteroidTimer.Reset();
+            SpawnAsteroid();
         }
     }
 
-    void Test()
+    void SpawnAsteroid()
     {
-        Debug.Log("Test");
+        GameObject asteroid = Instantiate(asteroidPrefab);
+
+        float speed = 10.0f;
+        Vector3 position = new Vector3(Random.Range(-8.0f, 8.0f), Random.Range(-4.0f, 4.0f));
+        Vector2 velocity = new Vector2(Random.Range(-speed, speed), Random.Range(-speed, speed));
+
+        asteroid.transform.position = position;
+        asteroid.GetComponent<Rigidbody2D>().velocity = velocity;
     }
 }
