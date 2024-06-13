@@ -9,9 +9,12 @@ public class Ship : MonoBehaviour
 
     Rigidbody2D rb;
 
-    float thrust = 10.0f;
-    float turnSpeed = 360.0f;   // 1 revolution per second
+    const float moveForce = 10.0f;
+    const float turnForce = 1.0f;
+
     const float moveSpeedMax = 10.0f;
+    const float turnSpeedMax = 360.0f;// 1 revolution per second
+
     const float bulletSpeed = 15.0f;
 
     void Start()
@@ -25,21 +28,21 @@ public class Ship : MonoBehaviour
         Vector3 direction = transform.right;
         if (Input.GetKey(KeyCode.W))
         {
-            rb.AddForce(direction * thrust);
+            rb.AddForce(direction * moveForce);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            rb.AddForce(-direction * thrust);
+            rb.AddForce(-direction * moveForce);
         }
 
         // Rotate
         if (Input.GetKey(KeyCode.A))
         {
-            rb.AddTorque(thrust * 0.1f);
+            rb.AddTorque(turnForce);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            rb.AddTorque(-thrust * 0.1f);
+            rb.AddTorque(-turnForce);
         }
 
         // Shoot
@@ -53,8 +56,9 @@ public class Ship : MonoBehaviour
             AudioManager.PlaySound(SoundName.FIRE);
         }
 
-        // Limit our movement speed (linear velocity) to a maximum
+        // Limit linear velocity (position rate change) & angular velocity (rotation rate of change) to a maximum
         rb.velocity = Vector2.ClampMagnitude(rb.velocity, moveSpeedMax);
+        rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -turnSpeedMax, turnSpeedMax);
 
         // Wrap ship
         GameUtilities.Wrap(gameObject);
