@@ -29,7 +29,15 @@ public class Player : MonoBehaviour
             rb.AddForce(transform.right * moveForce);
         }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            // Impulse = "immediate change", Force = "gradual change" -- velocity vs acceleration
+            rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
+        }
+
         float vx = Mathf.Clamp(rb.velocity.x, -xSpeedMax, xSpeedMax);
         rb.velocity = new Vector2(vx, rb.velocity.y);
+
+        // Don't need to clamp vertical velocity since jumping is an instantaneous change (jump force == max force)
     }
 }
