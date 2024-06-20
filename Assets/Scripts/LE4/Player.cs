@@ -40,4 +40,9 @@ public class Player : MonoBehaviour
 
         // Don't need to clamp vertical velocity since jumping is an instantaneous change (jump force == max force)
     }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision.name);
+    }
 }

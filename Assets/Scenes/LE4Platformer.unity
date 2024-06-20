@@ -878,6 +878,7 @@ GameObject:
   - component: {fileID: 1351542868}
   - component: {fileID: 1351542867}
   - component: {fileID: 1351542869}
+  - component: {fileID: 1351542870}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1026,6 +1027,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0967a00bbf113c4fb9f1ad3715bc872, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &1351542870
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351542864}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -1}
+  m_Size: {x: 0.25, y: 0.1}
+  m_Direction: 1
 --- !u!1 &1759099282
 GameObject:
   m_ObjectHideFlags: 0
