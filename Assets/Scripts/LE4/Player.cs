@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
 
-    const float moveForce = 10.0f;
+    const float moveForce = 15.0f;
     const float jumpForce = 10.0f;
 
     // Future improvement: air-speed vs ground-speed
@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
             rb.AddForce(transform.right * moveForce);
         }
 
-
+        float vx = Mathf.Clamp(rb.velocity.x, -xSpeedMax, xSpeedMax);
+        rb.velocity = new Vector2(vx, rb.velocity.y);
     }
 }
