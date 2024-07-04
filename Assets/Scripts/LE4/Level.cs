@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -13,50 +14,58 @@ public class Level : MonoBehaviour
     const int rowCount = 10;
     const int colCount = 20;
 
-    int[,] tileTypes =
-    {
-        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-    };
+    int[,] tileTypes = new int[rowCount, colCount];
+    //{
+    //    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+    //    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+    //};
 
     void Start()
     {
         using (StreamReader reader = new StreamReader("Assets/Levels/Level1.txt"))
         {
-            string line = reader.ReadLine();
-            Debug.Log(line);
+            for (int row = 0; row < rowCount; row++)
+            {
+                string line = reader.ReadLine();
+                for (int col = 0; col < colCount; col++)
+                {
+                    // TODO -- remove spaces from line (space = 32 in ascii, so we get -16 when we subtract '0')
+                    int value = line[col] - '0';
+                    tileTypes[row, col] = value;
+                }
+            }
         }
 
-        //float x = 0.5f;
-        //float y = 10.0f - 0.5f;
-        //
-        //for (int row = 0; row < rowCount; row++)
-        //{
-        //    List<GameObject> tileObjectRow = new List<GameObject>();
-        //    for (int col = 0; col < colCount; col++)
-        //    {
-        //        GameObject tile = Instantiate(tilePrefab);
-        //        tile.transform.position = new Vector3(x + col, y);
-        //
-        //        int value = tileTypes[row, col];
-        //        Color color = value == 0 ? Color.gray : Color.white;
-        //        bool collision = value != 0;
-        //        tile.GetComponent<Collider2D>().enabled = collision;
-        //        tile.GetComponent<SpriteRenderer>().color = color;
-        //
-        //        tileObjectRow.Add(tile);
-        //    }
-        //    tileObjects.Add(tileObjectRow);
-        //    y -= 1.0f;
-        //}
+        float x = 0.5f;
+        float y = 10.0f - 0.5f;
+        
+        for (int row = 0; row < rowCount; row++)
+        {
+            List<GameObject> tileObjectRow = new List<GameObject>();
+            for (int col = 0; col < colCount; col++)
+            {
+                GameObject tile = Instantiate(tilePrefab);
+                tile.transform.position = new Vector3(x + col, y);
+        
+                int value = tileTypes[row, col];
+                Color color = value == 0 ? Color.gray : Color.white;
+                bool collision = value != 0;
+                tile.GetComponent<Collider2D>().enabled = collision;
+                tile.GetComponent<SpriteRenderer>().color = color;
+        
+                tileObjectRow.Add(tile);
+            }
+            tileObjects.Add(tileObjectRow);
+            y -= 1.0f;
+        }
     }
 
     void Update()
