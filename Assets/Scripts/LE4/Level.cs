@@ -12,21 +12,42 @@ public class Level : MonoBehaviour
     const int rowCount = 10;
     const int colCount = 20;
 
+    int[,] tileTypes =
+    {
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+    };
+
     void Start()
     {
         float x = 0.5f;
         float y = 10.0f - 0.5f;
 
-        for (int i = 0; i < rowCount; i++)
+        for (int row = 0; row < rowCount; row++)
         {
-            List<GameObject> row = new List<GameObject>();
-            for (int j = 0;  j < colCount; j++)
+            List<GameObject> tileObjectRow = new List<GameObject>();
+            for (int col = 0; col < colCount; col++)
             {
                 GameObject tile = Instantiate(tilePrefab);
-                tile.transform.position = new Vector3(x + j, y);
-                row.Add(tile);
+                tile.transform.position = new Vector3(x + col, y);
+
+                int value = tileTypes[row, col];
+                Color color = value == 0 ? Color.gray : Color.white;
+                bool collision = value != 0;
+                tile.GetComponent<Collider2D>().enabled = collision;
+                tile.GetComponent<SpriteRenderer>().color = color;
+
+                tileObjectRow.Add(tile);
             }
-            tileObjects.Add(row);
+            tileObjects.Add(tileObjectRow);
             y -= 1.0f;
         }
     }
