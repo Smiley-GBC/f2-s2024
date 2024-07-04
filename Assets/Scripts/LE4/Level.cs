@@ -33,18 +33,20 @@ public class Level : MonoBehaviour
 
     void Update()
     {
-        Gradient();
+        // Uncomment for fancy colours
+        //Gradient();
     }
 
     void Gradient()
     {
+        float tt = Time.realtimeSinceStartup;
         for (int row = 0; row < rowCount; row++)
         {
             float red = row / (float)rowCount;
             for (int col = 0; col < colCount; col++)
             {
                 float green = col / (float)colCount;
-                Color color = new Color(red, green, 0.0f);
+                Color color = new Color(red, green, Mathf.Cos(tt) * 0.5f + 0.5f);
                 tileObjects[row][col].GetComponent<SpriteRenderer>().color = color;
             }
         }
