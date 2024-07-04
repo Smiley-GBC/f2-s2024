@@ -25,11 +25,11 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-            rb.AddForce(-transform.right * moveForce);
+            rb.AddForce(Vector3.left * moveForce);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            rb.AddForce(transform.right * moveForce);
+            rb.AddForce(Vector3.right * moveForce);
         }
 
         if (Input.GetKeyDown(KeyCode.W) && jumps > 0)
@@ -44,8 +44,14 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(vx, rb.velocity.y);
     }
 
+    // Fires when our ground collider collides!
     void OnTriggerEnter2D(Collider2D collision)
     {
         jumps = jumpCount;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // TODO -- handle movement stop on platform side-collision
     }
 }
