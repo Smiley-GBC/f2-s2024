@@ -44,10 +44,9 @@ public class Player : MonoBehaviour
         previousVelocity = rb.velocity;
     }
 
-
     void OnCollisionEnter2D(Collision2D collision)
     {
-        OnCollision(collision);
+        //OnCollision(collision);
     }
 
     void OnCollisionStay2D(Collision2D collision)
