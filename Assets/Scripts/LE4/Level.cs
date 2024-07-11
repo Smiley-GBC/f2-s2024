@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+public enum TileType
+{
+    INVALID = -1,
+    AIR,
+    WALL
+}
+
 public class Level : MonoBehaviour
 {
     [SerializeField]
@@ -54,10 +61,13 @@ public class Level : MonoBehaviour
             {
                 GameObject tile = Instantiate(tilePrefab);
                 tile.transform.position = new Vector3(x + col, y);
-        
-                int value = tileTypes[row, col];
-                Color color = value == 0 ? Color.gray : Color.white;
-                bool collision = value != 0;
+
+                // Set tile to invalid if its a negative number
+                TileType type = tileTypes[row, col] >= 0 ?
+                    (TileType)tileTypes[row, col] : TileType.INVALID;
+
+                Color color = TileColor(type);
+                bool collision = TileCollision(type);
                 tile.GetComponent<Collider2D>().enabled = collision;
                 tile.GetComponent<SpriteRenderer>().color = color;
         
@@ -87,5 +97,27 @@ public class Level : MonoBehaviour
                 tileObjects[row][col].GetComponent<SpriteRenderer>().color = color;
             }
         }
+    }
+
+    Color TileColor(TileType type)
+    {
+        switch (type)
+        {
+            case TileType.AIR: return Color.grey;
+            case TileType.WALL: return Color.black;
+            case TileType.INVALID: return Color.magenta;
+        }
+        return Color.white;
+    }
+
+    bool TileCollision(TileType type)
+    {
+        switch (type)
+        {
+            case TileType.AIR: return false;
+            case TileType.WALL: return true;
+            case TileType.INVALID: return false;
+        }
+        return false;
     }
 }

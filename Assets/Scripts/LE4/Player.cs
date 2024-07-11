@@ -48,13 +48,17 @@ public class Player : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         ContactPoint2D contact = collision.contacts[0];
+        // Vector = magnitude * direction
+        // contact.normal = "direction", contact.separation = "magnitude"
 
         if (contact.normal.y == 0.0f)
         {
+            // Horiztonal collision
             rb.velocity = new Vector2(0.0f, rb.velocity.y);
         }
         else if (contact.normal.x == 0.0f)
         {
+            // Vertical collision
             rb.velocity = new Vector2(rb.velocity.x, 0.0f);
         }
         else
