@@ -5,17 +5,18 @@ using UnityEngine;
 public class Player2 : MonoBehaviour
 {
     Rigidbody2D rb;
-
-    const float xMoveAcc = 15.0f;
-    const float xSpeedMax = 10.0f;
-    const float yJumpSpeed = 10.0f;
-
     const float groundDrag = 0.25f;
     const float airDrag = 0.5f;
 
+    // Horizontal movement
+    const float xMoveAcc = 15.0f;
+    const float xSpeedMax = 10.0f;
+    float xAcc = 0.0f;
+
+    // Vertical movement
+    const float yJumpSpeed = 10.0f;
     const int jumpCount = 2;
     int jumps = 0;
-
     bool grounded = false;
 
     void Start()
@@ -25,9 +26,7 @@ public class Player2 : MonoBehaviour
 
     void Update()
     {
-        float dt = Time.deltaTime;
-        rb.velocity += Vector2.right * xMoveAcc * Input.GetAxisRaw("Horizontal") * dt;
-
+        xAcc = xMoveAcc * Input.GetAxisRaw("Horizontal");
         if (Input.GetKeyDown(KeyCode.W) && jumps > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, yJumpSpeed);
@@ -38,8 +37,9 @@ public class Player2 : MonoBehaviour
     void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;
-        Vector2 acc = grounded ? Vector2.zero : Physics2D.gravity;
-        rb.velocity += acc * dt;
+        float yAcc = grounded ? 0.0f : Physics2D.gravity.y;
+        rb.velocity += new Vector2(xAcc, yAcc) * dt;
+
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -xSpeedMax, xSpeedMax), rb.velocity.y);
         rb.velocity *= Mathf.Pow(grounded ? groundDrag : airDrag, dt);
     }
@@ -75,7 +75,6 @@ public class Player2 : MonoBehaviour
     {
         grounded = true;
         jumps = jumpCount;
-        rb.velocity = new Vector2(rb.velocity.x, 0.0f);
     }
 
     void OnTriggerExit2D(Collider2D collision)
