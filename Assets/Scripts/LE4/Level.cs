@@ -41,7 +41,10 @@ public class Level : MonoBehaviour
         {
             for (int row = 0; row < rowCount; row++)
             {
+                // Read in the string, remove spaces from string so it maps 1:1 with our level file!
                 string line = reader.ReadLine();
+                line = string.Join("", line.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+
                 for (int col = 0; col < colCount; col++)
                 {
                     // TODO -- remove spaces from line (space = 32 in ascii, so we get -16 when we subtract '0')
