@@ -65,14 +65,13 @@ public class Player : MonoBehaviour
         {
             // Don't do anything -- preserve motion & resolve position only in collision-stay.
         }
+        ResolveCollision(collision);
     }
 
     // Move player along "collision normal" via "minimum translation vector" every frame of collision to resolve!
     void OnCollisionStay2D(Collision2D collision)
     {
-        ContactPoint2D contact = collision.contacts[0];
-        Vector2 mtv = contact.normal * Mathf.Abs(contact.separation);
-        rb.position += mtv;
+        ResolveCollision(collision);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -84,5 +83,12 @@ public class Player : MonoBehaviour
     void OnTriggerExit2D(Collider2D collision)
     {
         grounded = false;
+    }
+
+    void ResolveCollision(Collision2D collision)
+    {
+        ContactPoint2D contact = collision.contacts[0];
+        Vector2 mtv = contact.normal * Mathf.Abs(contact.separation);
+        rb.position += mtv;
     }
 }
