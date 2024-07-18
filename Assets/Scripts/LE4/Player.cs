@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
+    BoxCollider2D box;
+
     const float groundDrag = 0.25f;
     const float airDrag = 0.5f;
 
@@ -22,6 +24,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        box = GetComponent<BoxCollider2D>();
+        // Player: { 0, 0.5 }
+        // Square: { 0, 0 }
     }
 
     void Update()
@@ -42,6 +47,21 @@ public class Player : MonoBehaviour
 
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -xSpeedMax, xSpeedMax), rb.velocity.y);
         rb.velocity *= Mathf.Pow(grounded ? groundDrag : airDrag, dt);
+
+        RaycastHit2D hit = Physics2D.BoxCast(box.transform.position, box.size, 0.0f, transform.right);
+        if (hit)
+        {
+            Vector2 mtv = hit.centroid - hit.point;
+            rb.position += mtv.normalized * (box.size.x / 2.0f - hit.distance);
+        }
+
+        //RaycastHit2D[] hits = Physics2D.BoxCastAll(box.transform.position, box.size, 0.0f, transform.right);
+        //foreach (RaycastHit2D hit in hits)
+        //{
+        //    float boxLength = (hit.point - hit.centroid).magnitude;
+        //    float penDepth = hit.distance - boxLength;
+        //    rb.position += hit.normal * penDepth;
+        //}
     }
 
     // Stop horizontal motion if x-collision, stop vertical motion if y-collision. If corner collision, maintain motion and resolve position.
@@ -65,13 +85,6 @@ public class Player : MonoBehaviour
         {
             // Don't do anything -- preserve motion & resolve position only in collision-stay.
         }
-        ResolveCollision(collision);
-    }
-
-    // Move player along "collision normal" via "minimum translation vector" every frame of collision to resolve!
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        ResolveCollision(collision);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -85,10 +98,10 @@ public class Player : MonoBehaviour
         grounded = false;
     }
 
-    void ResolveCollision(Collision2D collision)
-    {
-        ContactPoint2D contact = collision.contacts[0];
-        Vector2 mtv = contact.normal * Mathf.Abs(contact.separation);
-        rb.position += mtv;
-    }
+    //void ResolveCollision(Collision2D collision)
+    //{
+    //    ContactPoint2D contact = collision.contacts[0];
+    //    Vector2 mtv = contact.normal * Mathf.Abs(contact.separation);
+    //    rb.position += mtv;
+    //}
 }
