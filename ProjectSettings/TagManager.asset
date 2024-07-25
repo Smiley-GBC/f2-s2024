@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Checkpoint
   - Platform
+  - AllBounce
   layers:
   - Default
   - TransparentFX

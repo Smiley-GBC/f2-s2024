@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     const float ySpeedMax = 10.0f;
     const float dragAir = 0.25f;    // Decelerate slower in air
     const float dragGround = 0.05f; // Decelerate faster on ground
+    const float dragBounce = 0.95f; // Decelerate very slow on bounce!
     float drag = dragGround;
     // TODO -- Add more nuanced drag based on direction of motion.
     // For example, decrease air drag if falling down!
@@ -65,8 +66,7 @@ public class Player : MonoBehaviour
     {
         if (collision.CompareTag("Platform"))
         {
-            grounded = true;
-            jumps = jumpCount;
+            OnGrounded();
             drag = dragGround;
         }
         else if (collision.CompareTag("Checkpoint"))
@@ -79,8 +79,34 @@ public class Player : MonoBehaviour
     {
         if (collision.CompareTag("Platform"))
         {
-            grounded = false;
+            OnAirborne();
             drag = dragAir;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("AllBounce"))
+        {
+            Vector2 normal = collision.contacts[0].normal;
+            OnGrounded();
+            drag = dragBounce;
+
+            if (Mathf.Abs(normal.y) >= 0.9f)
+            {
+                // Vertical collision
+                float dir = Mathf.Sign(normal.y);
+                rb.velocity = new Vector2(rb.velocity.x, dir * 10.0f);
+            }
+            else if (Mathf.Abs(normal.x) >= 0.9f)
+            {
+                // Horizontal collision
+                float dir = Mathf.Sign(normal.x);
+                rb.velocity = new Vector2(dir * 10.0f, rb.velocity.y);
+            }
+
+            // TODO -- see if we can make this prettier with math ;)
+            //rb.velocity = Vector2.Reflect(rb.velocity, normal * -1.0f) * 10.0f;
         }
     }
 
@@ -88,5 +114,16 @@ public class Player : MonoBehaviour
     {
         transform.position = spawn.position;
         rb.velocity = Vector2.zero;
+    }
+
+    void OnGrounded()
+    {
+        grounded = true;
+        jumps = jumpCount;
+    }
+
+    void OnAirborne()
+    {
+        grounded = false;
     }
 }
