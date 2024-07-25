@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     // Limits
     const float xSpeedMax = 10.0f;
     const float ySpeedMax = 10.0f;
+
     const float dragAir = 0.25f;    // Decelerate slower in air
     const float dragGround = 0.05f; // Decelerate faster on ground
     const float dragBounce = 0.95f; // Decelerate very slow on bounce!
@@ -88,25 +89,36 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("AllBounce"))
         {
-            Vector2 normal = collision.contacts[0].normal;
             OnGrounded();
             drag = dragBounce;
 
+            Vector2 normal = collision.contacts[0].normal;
             if (Mathf.Abs(normal.y) >= 0.9f)
             {
                 // Vertical collision
                 float dir = Mathf.Sign(normal.y);
-                rb.velocity = new Vector2(rb.velocity.x, dir * 10.0f);
+                rb.velocity = new Vector2(rb.velocity.x, dir * ySpeedMax);
             }
             else if (Mathf.Abs(normal.x) >= 0.9f)
             {
                 // Horizontal collision
                 float dir = Mathf.Sign(normal.x);
-                rb.velocity = new Vector2(dir * 10.0f, rb.velocity.y);
+                rb.velocity = new Vector2(dir * xSpeedMax, rb.velocity.y);
             }
 
             // TODO -- see if we can make this prettier with math ;)
             //rb.velocity = Vector2.Reflect(rb.velocity, normal * -1.0f) * 10.0f;
+        }
+        else if (collision.gameObject.CompareTag("TopBounce"))
+        {
+            OnGrounded();
+            drag = dragBounce;
+
+            Vector2 normal = collision.contacts[0].normal;
+            if (normal.y >= 0.9f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, ySpeedMax);
+            }
         }
     }
 
