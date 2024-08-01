@@ -1,39 +1,49 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SpriteAnimation
+{
+    public SpriteRenderer renderer;
 
+    public List<Sprite> frames = new List<Sprite>();
+    public Timer frameTime = new Timer();
+    public int frameNumber = 0;
+
+    public void Update(float dt)
+    {
+        renderer.sprite = frames[frameNumber];
+        if (frameTime.Expired())
+        {
+            frameTime.Reset();
+            frameNumber++;
+            frameNumber %= frames.Count;
+        }
+        frameTime.Tick(dt);
+    }
+}
 
 public class AnimationTester : MonoBehaviour
 {
-    SpriteRenderer renderer;
-    Timer animationTimer = new Timer();
-    List<Sprite> animationFrames = new List<Sprite>();
-    int frameNumber = 0;
+    SpriteAnimation walkDown = new SpriteAnimation();
 
     void Start()
     {
         Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/characters");
-        renderer = GetComponent<SpriteRenderer>();
+        walkDown.renderer = GetComponent<SpriteRenderer>();
 
-        animationFrames.Add(sprites[1]);
-        animationFrames.Add(sprites[0]);
-        animationFrames.Add(sprites[1]);
-        animationFrames.Add(sprites[2]);
+        walkDown.frames.Add(sprites[1]);
+        walkDown.frames.Add(sprites[0]);
+        walkDown.frames.Add(sprites[1]);
+        walkDown.frames.Add(sprites[2]);
 
         // Time (seconds) per frame!
-        animationTimer.total = 0.25f;
+        walkDown.frameTime.total = 0.25f;
     }
 
     void Update()
     {
-        renderer.sprite = animationFrames[frameNumber];
-        if (animationTimer.Expired())
-        {
-            animationTimer.Reset();
-            frameNumber++;
-            frameNumber %= animationFrames.Count;
-        }
-        animationTimer.Tick(Time.deltaTime);
+        walkDown.Update(Time.deltaTime);
     }
 }
