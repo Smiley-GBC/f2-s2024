@@ -5,13 +5,11 @@ using UnityEngine;
 
 public class SpriteAnimation
 {
-    public SpriteRenderer renderer;
-
     public List<Sprite> frames = new List<Sprite>();
     public Timer frameTime = new Timer();
     public int frameNumber = 0;
 
-    public void Update(float dt)
+    public void Update(SpriteRenderer renderer, float dt)
     {
         renderer.sprite = frames[frameNumber];
         if (frameTime.Expired())
@@ -26,17 +24,35 @@ public class SpriteAnimation
 
 public class AnimationTester : MonoBehaviour
 {
+    enum Direction
+    {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    }
+
+    enum State
+    {
+        IDLE,
+        WALK,
+        RUN
+    }
+
+    Direction direction = Direction.DOWN;
+    State state = State.IDLE;
+
+    // Frame 0 of each direction is the idle frame
     SpriteAnimation walkLeft = new SpriteAnimation();
     SpriteAnimation walkRight = new SpriteAnimation();
     SpriteAnimation walkUp = new SpriteAnimation();
     SpriteAnimation walkDown = new SpriteAnimation();
 
+    SpriteRenderer renderer;
+
     void Start()
     {
-        walkLeft.renderer = GetComponent<SpriteRenderer>();
-        walkRight.renderer = GetComponent<SpriteRenderer>();
-        walkUp.renderer = GetComponent<SpriteRenderer>();
-        walkDown.renderer = GetComponent<SpriteRenderer>();
+        renderer = GetComponent<SpriteRenderer>();
 
         // Time (seconds) per frame!
         walkLeft.frameTime.total = 0.25f;
@@ -71,19 +87,81 @@ public class AnimationTester : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
-            walkUp.Update(Time.deltaTime);
+            direction = Direction.UP;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            walkDown.Update(Time.deltaTime);
+            direction = Direction.DOWN;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            walkLeft.Update(Time.deltaTime);
+            direction = Direction.LEFT;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            walkRight.Update(Time.deltaTime);
+            direction = Direction.RIGHT;
+        }
+
+        bool input =
+            Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) ||
+            Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D);
+
+        state = input ? State.WALK : State.IDLE;
+
+        if (state == State.IDLE)
+        {
+            OnIdle();
+        }
+        else
+        {
+            OnUpdate();
+        }
+    }
+
+    void OnIdle()
+    {
+        Sprite sprite = null;
+        switch (direction)
+        {
+            case Direction.LEFT:
+                sprite = walkLeft.frames[0];
+                break;
+
+            case Direction.RIGHT:
+                sprite = walkRight.frames[0];
+                break;
+
+            case Direction.UP:
+                sprite = walkUp.frames[0];
+                break;
+
+            case Direction.DOWN:
+                sprite = walkDown.frames[0];
+                break;
+        }
+        renderer.sprite = sprite;
+    }
+
+    void OnUpdate()
+    {
+        float dt = Time.deltaTime;
+        switch (direction)
+        {
+            case Direction.LEFT:
+                walkLeft.Update(renderer, dt);
+                break;
+
+            case Direction.RIGHT:
+                walkRight.Update(renderer, dt);
+                break;
+
+            case Direction.UP:
+                walkUp.Update(renderer, dt);
+                break;
+
+            case Direction.DOWN:
+                walkDown.Update(renderer, dt);
+                break;
         }
     }
 }
